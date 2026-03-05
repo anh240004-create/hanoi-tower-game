@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Hanoi Tower Game</title>
+<style>
+body{
+font-family:Arial;
+text-align:center;
+background:#f0f8ff;
+}
+.tower{
+display:inline-block;
+width:120px;
+height:250px;
+border:2px solid black;
+margin:10px;
+vertical-align:top;
+}
+.disk{
+height:25px;
+margin:3px auto;
+background:red;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Game Tháp Hà Nội</h1>
+
+<div id="game">
+<div class="tower" id="A"></div>
+<div class="tower" id="B"></div>
+<div class="tower" id="C"></div>
+</div>
+
+<button onclick="resetGame()">Reset</button>
+
+<script>
+
+let towers = {
+A:[3,2,1],
+B:[],
+C:[]
+}
+
+let selected = null
+
+function render(){
+["A","B","C"].forEach(t=>{
+let div = document.getElementById(t)
+div.innerHTML=""
+
+towers[t].slice().reverse().forEach(size=>{
+let disk=document.createElement("div")
+disk.className="disk"
+disk.style.width=(size*30)+"px"
+div.appendChild(disk)
+})
+
+div.onclick=()=>clickTower(t)
+})
+}
+
+function clickTower(t){
+if(selected==null){
+if(towers[t].length>0){
+selected=t
+}
+}else{
+
+let from=selected
+let to=t
+
+let disk=towers[from].pop()
+
+if(towers[to].length==0 || towers[to][towers[to].length-1]>disk){
+towers[to].push(disk)
+}else{
+towers[from].push(disk)
+}
+
+selected=null
+render()
+}
+}
+
+function resetGame(){
+towers={A:[3,2,1],B:[],C:[]}
+render()
+}
+
+render()
+
+</script>
+
+</body>
+</html>
